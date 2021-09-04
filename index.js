@@ -8,12 +8,13 @@ module.exports = app => {
     const triggered = context.payload.issue.labels.some(label => label.name === 'bot/update')
     if (!triggered) return
 
-    exec(`sh ./script/run.sh ${number}`, (err) => {
+    exec(`sh ./script/run.sh ${number}`, (err, stdout) => {
       if (err) {
         console.error(err)
         return
       }
-      const pr = context.github.pulls.create({
+      console.log(stdout)
+      const pr = context.octokit.pulls.create({
         owner: 'kcwikizh',
         repo: 'kcdata',
         head: `bot-update-${number}`,
@@ -23,7 +24,7 @@ module.exports = app => {
         body: `Triggered by #${number}\nMerge 前请务必检查内容是否填写完整。（例如：wiki_id是否填写完全）`
       })
       const issueComment = context.issue({ body: 'Done.' })
-      return context.github.issues.createComment(issueComment)
+      return context.octokit.issues.createComment(issueComment)
     })
   })
 }
