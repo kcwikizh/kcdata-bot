@@ -1,7 +1,7 @@
 #!/bin/sh
 
 TARGET_FOLDER=./tmp/kcdata-$1
-git clone https://github.com/kcwikizh/kcdata.git $TARGET_FOLDER
+git clone https://$GIT_USER@github.com/kcwikizh/kcdata.git $TARGET_FOLDER
 cd $TARGET_FOLDER
 git checkout -b bot-update-$1
 
